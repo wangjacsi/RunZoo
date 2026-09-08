@@ -17,6 +17,8 @@ pub static ANIMALS: &[Animal] = &[
     Animal { key: "rabbit", label: "Rabbit", tempo: 1.20 },
     Animal { key: "elephant", label: "Elephant", tempo: 0.60 },
     Animal { key: "chicken", label: "Chicken", tempo: 1.30 },
+    Animal { key: "meerkat", label: "Meerkat", tempo: 1.35 },
+    Animal { key: "giraffe", label: "Giraffe", tempo: 0.70 },
 ];
 
 pub fn index_of(key: &str) -> usize {

@@ -4,7 +4,7 @@ An animal runs across your menu bar as fast as your machine is busy, and wears
 the colour of how bad it is. Idle, it strolls in plain white; overloaded, it
 sprints in red.
 
-![Seven animals sitting in a menu bar](assets/readme/menubar.png)
+![Nine animals sitting in a menu bar](assets/readme/menubar.png)
 
 macOS and Windows · Rust · minimal dependencies · 564KB bundle
 
@@ -58,25 +58,28 @@ at login. (By hand, that is System Settings → General → Login Items → add
 Windows, `cargo build --release` is the whole story — the result is
 `target\release\runzoo.exe` and it needs nothing beside it.
 
-## Seven animals
+## Nine animals
 
-| | | | | | | |
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| ![](assets/readme/animal-cat.png) | ![](assets/readme/animal-dog.png) | ![](assets/readme/animal-rattlesnake.png) | ![](assets/readme/animal-squirrel.png) | ![](assets/readme/animal-rabbit.png) | ![](assets/readme/animal-elephant.png) | ![](assets/readme/animal-chicken.png) |
-| Cat | Dog | Rattlesnake | Squirrel | Rabbit | Elephant | Chicken |
+| | | | | | | | | |
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| ![](assets/readme/animal-cat.png) | ![](assets/readme/animal-dog.png) | ![](assets/readme/animal-rattlesnake.png) | ![](assets/readme/animal-squirrel.png) | ![](assets/readme/animal-rabbit.png) | ![](assets/readme/animal-elephant.png) | ![](assets/readme/animal-chicken.png) | ![](assets/readme/animal-meerkat.png) | ![](assets/readme/animal-giraffe.png) |
+| Cat | Dog | Rattlesnake | Squirrel | Rabbit | Elephant | Chicken | Meerkat | Giraffe |
 
 The menu bar icon is drawn as a silhouette. Colour is carried by the fill, so
-the seven have to be told apart **by shape alone** — which is how you recognise
+the nine have to be told apart **by shape alone** — which is how you recognise
 an animal anyway: the elephant by its trunk, the rabbit by its ears, the
 squirrel by its tail, the chicken by its comb, the rattlesnake by its S and its
-rattle.
+rattle, the giraffe by its neck, the meerkat by standing up straight with its
+tail down like a third leg.
 
 One stride is eight frames, and the busier the machine the faster they play:
 
 ![Eight frames of a cat's stride](assets/readme/gait.png)
 
-At the same load each animal walks at its own tempo. The elephant ambles at
-0.6x, the squirrel fusses at 1.4x (`src/animal.rs`).
+At the same load each animal walks at its own tempo. The giraffe ambles at
+0.7x, the meerkat fusses at 1.35x (`src/animal.rs`), and `src/animal.rs` is
+also where the roster lives — the sprite and README generators both read it, so
+adding an animal is one line plus a drawing.
 
 ## What it does
 
@@ -85,7 +88,14 @@ disk, network and battery each appear as a small graph. The one driving the
 animal leads the list, drawn a size up, and stays there whichever you pick, so
 the eye does not have to hunt for the checkmark. Readings are right-aligned in
 a column of their own, which is the difference between a list of numbers and a
-table of them.
+table of them — and long process names are cut rather than allowed to shove
+that column out of line.
+
+**The numbers keep moving while you hold the menu open.** They used to freeze
+at whatever they were when it opened, because the menu was only built on the
+way up. Now each tick writes the new readings and sparklines over the items
+already on screen — nothing is added or removed, so nothing flickers and a
+submenu does not close under the pointer.
 
 ![Four sparklines: a sawtooth, a step, spikes, and a saturated line](assets/readme/sparklines.png)
 
@@ -237,7 +247,7 @@ losing it the way nearest-neighbour would.
 without the checkmark; the row driving the animal is the one at the top of the
 list, and the submenu labels name the current animal and colour anyway.
 
-Everything else is the same: the seven animals, the ramp, the dashboard, the
+Everything else is the same: the nine animals, the ramp, the dashboard, the
 overload alert (a tray balloon rather than a notification), and **Open Task
 Manager** where macOS says Activity Monitor. Settings live in
 `%APPDATA%\RunZoo\settings.conf` rather than NSUserDefaults.
@@ -262,7 +272,7 @@ frame.
 ```sh
 python3 tools/gen_sprites.py         # refreshes assets/animals/* and src/sprites.rs
 python3 tools/gen_readme_images.py   # refreshes the pictures above
-open assets/animals/_contact_sheet.png   # seven species x 8 frames, side by side
+open assets/animals/_contact_sheet.png   # nine species x 8 frames, side by side
 ```
 
 Change the numbers, run it again, look at the sheet. Pure Python, no
@@ -283,6 +293,7 @@ needs no image decoder and is the same three lines everywhere.
 ```sh
 runzoo --probe 10        # print measurements, with severity and colour, no GUI
 runzoo --dump-menu       # print the menu as built, no clicking; dumps its graphs
+runzoo --dump-live       # macOS: prove an open menu updates — same rows, 3s apart
 runzoo --dump-tint       # print the whole colour ramp
 runzoo --dump-sprites    # every animal across the ramp  → /tmp/runzoo_sprites.raw
 runzoo --dump-spark-demo # sparklines from synthetic data → /tmp/runzoo_spark.raw

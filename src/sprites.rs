@@ -77,6 +77,26 @@ pub static MASKS: &[(&str, &[&[u8]])] = &[
         include_bytes!("../assets/animals/rattlesnake/rattlesnake_6.mask"),
         include_bytes!("../assets/animals/rattlesnake/rattlesnake_7.mask"),
     ]),
+    ("meerkat", &[
+        include_bytes!("../assets/animals/meerkat/meerkat_0.mask"),
+        include_bytes!("../assets/animals/meerkat/meerkat_1.mask"),
+        include_bytes!("../assets/animals/meerkat/meerkat_2.mask"),
+        include_bytes!("../assets/animals/meerkat/meerkat_3.mask"),
+        include_bytes!("../assets/animals/meerkat/meerkat_4.mask"),
+        include_bytes!("../assets/animals/meerkat/meerkat_5.mask"),
+        include_bytes!("../assets/animals/meerkat/meerkat_6.mask"),
+        include_bytes!("../assets/animals/meerkat/meerkat_7.mask"),
+    ]),
+    ("giraffe", &[
+        include_bytes!("../assets/animals/giraffe/giraffe_0.mask"),
+        include_bytes!("../assets/animals/giraffe/giraffe_1.mask"),
+        include_bytes!("../assets/animals/giraffe/giraffe_2.mask"),
+        include_bytes!("../assets/animals/giraffe/giraffe_3.mask"),
+        include_bytes!("../assets/animals/giraffe/giraffe_4.mask"),
+        include_bytes!("../assets/animals/giraffe/giraffe_5.mask"),
+        include_bytes!("../assets/animals/giraffe/giraffe_6.mask"),
+        include_bytes!("../assets/animals/giraffe/giraffe_7.mask"),
+    ]),
 ];
 
 pub const COFFEE_W: usize = 28;

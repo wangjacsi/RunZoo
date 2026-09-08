@@ -12,6 +12,7 @@ tint.rs changes, change it here too. `runzoo --dump-tint` prints the real one to
 check against.
 """
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
@@ -20,6 +21,21 @@ from gen_sprites import (  # noqa: E402
 )
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "assets", "readme")
+ANIMAL_RS = os.path.join(os.path.dirname(__file__), "..", "src", "animal.rs")
+
+
+def roster():
+    """The cast, in the order the app lists it.
+
+    Read out of src/animal.rs rather than repeated here: a second hand-kept
+    list is a list that goes stale the first time an animal is added.
+    """
+    src = open(ANIMAL_RS).read()
+    keys = re.findall(r'Animal \{ key: "([a-z]+)"', src)
+    missing = [k for k in keys if k not in ANIMALS]
+    if missing:
+        raise SystemExit(f"animal.rs lists {missing}, which gen_sprites.py cannot draw")
+    return keys
 
 CALM = (255, 255, 255)
 RED = (0xFF, 0x3B, 0x30)
@@ -205,12 +221,12 @@ def main():
     os.makedirs(OUT, exist_ok=True)
 
     # 1. The hero: every animal in the bar, the way they arrive there.
-    order = ["cat", "dog", "rattlesnake", "squirrel", "rabbit", "elephant", "chicken"]
+    order = roster()
     size = menu_bar(
         os.path.join(OUT, "menubar.png"),
         [(frame(n), CALM) for n in order],
     )
-    print(f"  menubar.png            {size[0]}x{size[1]}  (seven animals in the bar)")
+    print(f"  menubar.png            {size[0]}x{size[1]}  ({len(order)} animals in the bar)")
 
     # 2. The same bar, one animal, as the machine gets busier.
     loads = [0, 25, 50, 70, 85, 100]

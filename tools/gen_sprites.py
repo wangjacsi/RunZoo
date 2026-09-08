@@ -308,9 +308,58 @@ def coffee(c):
         c.curve([(x0, 9.2), (x0 + 1.6, 7.0), (x0 - 1.2, 4.8), (x0 + 0.6, 2.6)], 1.1, 0.8)
 
 
+def meerkat(c, t):
+    """Upright on the hind legs. The sentry stance is the whole silhouette —
+    a meerkat drawn on all fours is just a small brown mammal. Slender torso,
+    and a tail held straight and low, which is what it props itself on."""
+    bob = math.sin(2 * math.pi * t * 2) * 0.8
+    by = 20 + bob
+    sway = math.sin(2 * math.pi * t) * 1.3
+    # Straight, low, nearly a third leg — not a curl. That is the giveaway.
+    c.taper(17.5, by + 4, 7.5 + sway, by + 10.5, 1.6, 0.7)
+    leg(c, 19, by + 6.5, t + 0.00, 1.5, 2.4, 2.0, 0.4)
+    leg(c, 21.5, by + 6.5, t + 0.50, 1.5, 2.4, 2.0, 0.4)
+    c.ellipse(19.8, by + 0.5, 3.3, 7.0)           # the standing torso, slim
+    c.ellipse(21.3, by + 2.0, 2.4, 3.6)           # chest pushed forward
+    # Forepaws held together at the chest, the way they always are
+    c.taper(21.4, by - 2.8, 23.8, by - 1.6, 1.4, 1.0)
+    hx, hy = 20.4, by - 9.8
+    c.taper(20.0, by - 6.5, hx, hy + 2.2, 2.3, 2.1)   # long thin neck
+    c.disc(hx, hy, 2.7)
+    c.disc(hx - 2.3, hy - 2.0, 1.2)               # small round ears, set low
+    c.disc(hx + 1.5, hy - 2.3, 1.2)
+    c.taper(hx + 1.3, hy + 0.7, hx + 5.4, hy + 1.7, 1.8, 0.9)   # long sharp snout
+    eye(c, hx + 0.9, hy - 0.3)
+
+
+def giraffe(c, t):
+    """Neck, ossicones, and legs that go on forever. Nothing else needed."""
+    bob = math.sin(2 * math.pi * t * 2) * 0.5
+    by = 20 + bob
+    sway = math.sin(2 * math.pi * t) * 0.9
+    c.taper(9, by - 2, 6.4, by + 4, 0.9, 0.6)          # tail
+    c.disc(6.2, by + 4.6, 1.2)                          # and its tuft
+    leg(c, 11, by + 3, t + 0.00, 1.4, 3.4, 2.4, 1.0)
+    leg(c, 20, by + 3, t + 0.50, 1.4, 3.4, 2.4, 1.0)
+    c.ellipse(15, by, 6.5, 3.8)
+    c.ellipse(19, by - 1.6, 4.2, 3.4)                   # shoulder, sloping up
+    leg(c, 13, by + 3, t + 0.25, 1.4, 3.4, 2.4, 1.0)
+    leg(c, 22, by + 3, t + 0.75, 1.4, 3.4, 2.4, 1.0)
+    # The neck. Everything above the shoulder is what makes this a giraffe.
+    nx, ny = 31 + sway, 6 - bob
+    c.curve([(20.5, by - 4), (25, by - 9), (nx, ny)], 3.4, 2.1)
+    c.disc(nx + 1, ny - 0.8, 2.4)
+    c.taper(nx + 2, ny - 0.4, nx + 4.8, ny + 0.5, 1.9, 1.5)     # muzzle
+    c.taper(nx - 0.6, ny - 2.8, nx - 1.4, ny - 4.9, 0.8, 0.55)  # ossicones
+    c.taper(nx + 1.8, ny - 3.0, nx + 2.4, ny - 5.1, 0.8, 0.55)
+    c.taper(nx - 1.4, ny - 1.2, nx - 3.6, ny - 2.2, 1.4, 0.8)   # ear
+    eye(c, nx + 0.9, ny - 1.2)
+
+
 ANIMALS = {
     "cat": cat, "dog": dog, "rabbit": rabbit, "squirrel": squirrel,
     "elephant": elephant, "chicken": chicken, "rattlesnake": rattlesnake,
+    "meerkat": meerkat, "giraffe": giraffe,
 }
 
 

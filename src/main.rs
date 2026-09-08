@@ -53,6 +53,11 @@ fn main() {
         dump::menu_tree();
         return;
     }
+    #[cfg(target_os = "macos")]
+    if has("--dump-live") {
+        mac::dump_live();
+        return;
+    }
     if has("--probe") {
         let n = args
             .iter()

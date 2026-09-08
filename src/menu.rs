@@ -71,6 +71,20 @@ pub enum Art {
     Coffee,
 }
 
+/// Rows hang their numbers off fixed right-aligned stops. A label long enough
+/// to reach the first stop shoves the tab past it and the column stops lining
+/// up, so process names are cut to fit. Counted in characters — approximate on
+/// a proportional font, but it leaves room for the widest name that fits.
+const NAME_MAX: usize = 24;
+
+fn fit(name: &str) -> String {
+    if name.chars().count() <= NAME_MAX {
+        return name.to_string();
+    }
+    let head: String = name.chars().take(NAME_MAX - 1).collect();
+    format!("{head}\u{2026}")
+}
+
 /// A row's text: a label, then columns that hang off right-aligned stops.
 pub struct Cells {
     pub label: String,
@@ -151,7 +165,7 @@ pub fn build(app: &App) -> Vec<Node> {
     }
     for p in app.metrics.top.iter().take(5) {
         out.push(Node::Info(Cells {
-            label: format!("   {}", p.name),
+            label: format!("   {}", fit(&p.name)),
             cols: vec![
                 format!("{:.0}%", p.cpu),
                 format!("{:.0} MB", p.mem as f64 / 1024.0 / 1024.0),
@@ -227,4 +241,26 @@ pub fn build(app: &App) -> Vec<Node> {
         art: None,
     });
     out
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn long_names_are_cut_so_the_columns_still_line_up() {
+        assert_eq!(fit("node"), "node");
+        let long = "Google Chrome Helper (Renderer)";
+        let cut = fit(long);
+        assert_eq!(cut.chars().count(), NAME_MAX);
+        assert!(cut.ends_with('\u{2026}'));
+        assert!(long.starts_with(&cut[..cut.len() - '\u{2026}'.len_utf8()]));
+    }
+
+    #[test]
+    fn a_name_exactly_at_the_limit_is_left_alone() {
+        let n = "x".repeat(NAME_MAX);
+        assert_eq!(fit(&n), n);
+        assert_eq!(fit(&"x".repeat(NAME_MAX + 1)).chars().count(), NAME_MAX);
+    }
 }
